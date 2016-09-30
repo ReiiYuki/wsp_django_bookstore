@@ -1,0 +1,55 @@
+<!Doctype html>
+<html>
+  <header>
+    <meta charset="utf-8">
+    <title>Bookstore</title>
+  </header>
+  <body align="center">
+    <h1>Bookstore</h1>
+    <h2>Insert New Book</h2>
+    <form action="{% url 'book:insert' %}"method="post">
+      {% csrf_token %}
+      Book ID : <input type="number" name="book_id"><br><br>
+      ISBN : <input type="number" name="isbn"><br><br>
+      Book Name : <input type="text" name="book_name"><br><br>
+      Price : <input type="number" name="price"><br><br>
+      Author : <input type="text" name="author"><br><br>
+      <input type="submit" value="Insert">
+    </form>
+    <h2>Book List</h2>
+    <table style="width:100%">
+      <tr>
+        <th>Book_id</th>
+        <th>ISBN</th>
+        <th>Book_name</th>
+        <th>Price</th>
+        <th>Author</th>
+        <th></th>
+        <th></th>
+      </tr>
+      {% for book in book_list %}
+        <tr align="center">
+          {% if bookt == book  %}
+            <form action="{% url 'book:update' %}" method="post">
+              {% csrf_token %}
+              <td><input type="number" name="book_id" value="{{ book.book_id }}"></td>
+              <td><input type="number" name="isbn" value="{{ book.isbn }}"></td>
+              <td><input type="text" name="book_name" value="{{ book.book_name }}"></td>
+              <td><input type="number" name="price" value="{{ book.price }}"></td>
+              <td><input type="text" name="author" value="{{ book.author }}"></td>
+              <td><input type="submit" value="Update"></form></td>
+            </form>
+          {% else  %}
+            <td>{{ book.book_id }}</td>
+            <td>{{ book.isbn }}</td>
+            <td>{{ book.book_name }}</td>
+            <td>{{ book.price }}</td>
+            <td>{{ book.author }}</td>
+            <td><form action="{% url 'book:update_request' %}" method="post">{% csrf_token %}<button name="book_id" value="{{ book.book_id }}">Update</button></form></td>
+          {% endif %}
+          <td><form action="{% url 'book:delete' %}" method="post">{% csrf_token %}<button name="book" value="{{ book.book_id }}">Delete</button></form></td>
+        </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>
